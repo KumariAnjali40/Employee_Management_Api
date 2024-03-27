@@ -38,7 +38,7 @@ userRouter.post('/login',async(req,res)=>{
             if(result){
                 const token=jwt.sign({userID:user._id},"Anjali",{expiresIn:"1d"});
                 const refresh_token=jwt.sign({userID:user._id},"Anjali",{expiresIn:"7d"});
-                res.status(200).json({msg:"Login Successfull!",token,refresh_token});
+                res.status(200).json({msg:"Login Successfull!",token,refresh_token,user});
             }else{
                 res.status(200).json({msg:"Wrong Password"});
             }
