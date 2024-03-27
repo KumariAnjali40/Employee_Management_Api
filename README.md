@@ -2,6 +2,8 @@
 
 This API provides endpoints for managing employees, including registration, authentication, CRUD operations, and filtering/searching/pagination for employees. Below are the details of the available routes:
 
+- [Backend Deployment Link](https://tcs-mock.onrender.com/) - Visit this link to access the deployed API.
+
 ## User Routes
 
 ### Register
