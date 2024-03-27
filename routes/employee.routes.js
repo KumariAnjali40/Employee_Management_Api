@@ -44,9 +44,37 @@ employeeRouter.patch('/update/:id', auth, access(["Admin"]), async (req, res) =>
 });
 
 // Get all employees (Admin only)
+// employeeRouter.get('/all', auth, access(["Admin"]), async (req, res) => {
+//     try {
+//         const employees = await UserModel.find({ role: "User" }); 
+//         res.status(200).json({ employees });
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// });
+
+// Get all employees with filtering, searching, and pagination (Admin only)
 employeeRouter.get('/all', auth, access(["Admin"]), async (req, res) => {
     try {
-        const employees = await UserModel.find({ role: "User" }); 
+        const { page = 1, limit = 10, salary, name } = req.query;
+        const query = { role: "User" }; // Assuming "User" role is for employees
+
+        // Apply filtering based on salary
+        if (salary) {
+            query.salary = { $gte: salary }; // Filter employees with salary greater than or equal to the provided value
+        }
+
+        // Apply searching based on name
+        if (name) {
+            query.name = { $regex: new RegExp(name, "i") }; // Case-insensitive search by name
+        }
+
+        // Execute query with pagination
+        const employees = await UserModel.find(query)
+            .skip((page - 1) * limit)
+            .limit(limit);
+
         res.status(200).json({ employees });
     } catch (err) {
         console.error(err);
